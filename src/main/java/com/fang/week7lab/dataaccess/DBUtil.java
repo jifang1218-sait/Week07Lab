@@ -52,9 +52,9 @@ public class DBUtil {
         return ret;
     }
     
-    static public void updateUser(User user) {
+    static public User updateUser(User user) {
     	if (user == null) {
-    		return;
+    		return user;
     	}
     	
         Connection conn = ConnectionPool.instance().getConnection();
@@ -66,7 +66,7 @@ public class DBUtil {
         		+ "where email=?";
 
         try {
-        	PreparedStatement stmt = conn.prepareStatement(sql);
+            PreparedStatement stmt = conn.prepareStatement(sql);
             int col = 1;
             stmt.setString(col++, user.getFirstName().trim());
             stmt.setString(col++, user.getLastName().trim());
@@ -80,11 +80,13 @@ public class DBUtil {
         }
         
         ConnectionPool.instance().closeConnection(conn);
+        
+        return user;
     }
     
-    static public void addUser(User user) {
+    static public User addUser(User user) {
     	if (user == null) {
-    		return;
+    		return user;
     	}
     	
         Connection conn = ConnectionPool.instance().getConnection();
@@ -92,7 +94,7 @@ public class DBUtil {
         String sql = "insert into user values (?, ?, ?, ?, ?)";
 
         try {
-        	PreparedStatement stmt = conn.prepareStatement(sql);
+            PreparedStatement stmt = conn.prepareStatement(sql);
             int col = 1;
             stmt.setString(col++, user.getEmail().trim());
             stmt.setString(col++, user.getFirstName().trim());
@@ -106,6 +108,8 @@ public class DBUtil {
         }
         
         ConnectionPool.instance().closeConnection(conn);
+        
+        return user;
     }
     
     static public void deleteUser(String email) {
@@ -130,7 +134,7 @@ public class DBUtil {
     }
     
     static public List<User> getUsers() {
-        List<User> ret = new LinkedList<User>();
+        List<User> ret = new LinkedList<>();
         
         Connection conn = ConnectionPool.instance().getConnection();
         try (PreparedStatement stmt = 
@@ -159,7 +163,7 @@ public class DBUtil {
     }
     
     static public List<Role> getRoles() {
-        List<Role> ret = new LinkedList<Role>();
+        List<Role> ret = new LinkedList<>();
         
         Connection conn = ConnectionPool.instance().getConnection();
         try (PreparedStatement stmt = 

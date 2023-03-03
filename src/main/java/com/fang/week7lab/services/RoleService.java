@@ -6,6 +6,9 @@ import java.util.Map;
 
 import com.fang.week7lab.dataaccess.DBUtil;
 import com.fang.week7lab.entities.Role;
+import java.util.LinkedList;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 public class RoleService {
 	
@@ -15,14 +18,8 @@ public class RoleService {
         private static final RoleService _instance = new RoleService();
     }
     
-    
     private RoleService() {
-    	roles = new HashMap<Long, Role>();
-    	List<Role> rs = DBUtil.getRoles();
-    	for (int i=0; i<rs.size(); ++i) {
-    		Role r = rs.get(i);
-    		roles.put(r.getId(), r);
-    	}
+    	reload();
     }
     
     public static RoleService instance() {
@@ -34,7 +31,19 @@ public class RoleService {
     	return r.getName();
     }
     
-    public List<Role> getRoles() {
-    	return DBUtil.getRoles();
+    public List<Role> getRoles(HttpServletRequest req, HttpServletResponse resp) {
+        List<Role> ret = new LinkedList<>(roles.values());
+        req.setAttribute("roles", ret);
+        
+        return ret;
+    }
+    
+    public final void reload() {
+        roles = new HashMap<>();
+    	List<Role> rs = DBUtil.getRoles();
+    	for (int i=0; i<rs.size(); ++i) {
+    		Role r = rs.get(i);
+    		roles.put(r.getId(), r);
+    	}
     }
 }

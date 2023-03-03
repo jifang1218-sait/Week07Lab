@@ -7,7 +7,7 @@ public class SDLogger {
         private static final SDLogger _instance = new SDLogger();
     }
 	
-	private Logger logger;
+	private final Logger logger;
 	private static final String kLoggerName = "Week7Lab";
     
     private SDLogger() {
@@ -18,19 +18,19 @@ public class SDLogger {
         return Holder._instance;
     }
     
-    public void warn(Object msg) {
-    	logger.warn(msg);
+    public static void warn(Object msg) {
+    	SDLogger.instance().logger.warn(msg);
     }
     
-    public void info(Object msg) {
-    	logger.info(msg);
+    public static void info(Object msg) {
+    	SDLogger.instance().logger.info(msg);
     }
     
-    public void debug(Object msg) {
-    	logger.debug(msg);
+    public static void debug(Object msg) {
+    	SDLogger.instance().logger.debug(msg);
     }
     
-    public void error(Object msg) {
-    	logger.error(msg);
+    public static void error(Object msg) {
+    	SDLogger.instance().logger.error(msg);
     }
 }
